@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <section class="header">
+      <div class="tittle">
+        <h1>Search Any Recipe</h1>
+        <p>
+          <span>Start here-</span> Look up any recipe, just enter one ingredient
+        </p>
+        <p>See what you find!</p>
+      </div>
+      <div class="input-recipe">
+        <input
+          type="text"
+          name="food-recipe"
+          id="food-recipe"
+          placeholder="Ingredient 🍴"
+        />
+        <button onclick="init()">GO!</button>
+      </div>
+    </section>
+    <section class="recipes">
+      <div class="info-recipes" id="info-recipes"></div>
+    </section>
+    <script src="./js/index.js"></script>
+  </body>
+</html>
