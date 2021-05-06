@@ -1,16 +1,14 @@
 const recipeInput = document.getElementById('recipe-input');
 const infoRecipes = document.getElementById('info-recipes');
-const button = document.getElementById('send_info');
+const sendInfoButton = document.getElementById('send_info');
 
 (function addEvents() {
-  button.addEventListener('click', init);
+  sendInfoButton.addEventListener('click', init);
 })();
 
 function init() {
   if (!recipeInput.value) return insertError();
-
   cleanData();
-
   return getData(recipeInput.value);
 }
 
