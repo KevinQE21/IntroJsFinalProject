@@ -1,20 +1,32 @@
-function init() {
-  const recipe = document.getElementById('food-recipe').value;
+const recipeInput = document.getElementById('recipe-input');
+const infoRecipes = document.getElementById('info-recipes');
+const button = document.getElementById('send_info');
 
-  if (!recipe) return insertError();
+(function addEvents() {
+  button.addEventListener('click', init);
+})();
+
+function init() {
+  if (!recipeInput.value) return insertError();
+
   cleanData();
-  return getData(recipe);
+
+  return getData(recipeInput.value);
+}
+
+function cleanData() {
+  infoRecipes.innerHTML = '';
+  recipeInput.classList.remove('error');
 }
 
 function insertError() {
-  const error = document.getElementById('food-recipe');
-  error.className = 'error';
+  recipeInput.className = 'error';
 }
 
-function getData(recipe) {
+function getData(recipeInput) {
   const APP_ID = '35c6ca2e';
   const APP_KEY = '9e890929f8898cc7ce56be8d77bc8666';
-  const url = `https://api.edamam.com/search?q=${recipe}&app_id=${APP_ID}&app_key=${APP_KEY}`;
+  const url = `https://api.edamam.com/search?q=${recipeInput}&app_id=${APP_ID}&app_key=${APP_KEY}`;
 
   fetch(url)
     .then((response) => response.json())
@@ -23,48 +35,56 @@ function getData(recipe) {
 }
 
 function handleData({ hits }) {
-  if (!hits.length) return showDataError();
+  if (!hits.length) return displayEmptyInfo();
 
-  hits.forEach((recipe) => {
-    for (const key in recipe) {
-      return displayInfo(recipe[key]);
+  hits.forEach((recipes) => {
+    for (const key in recipes) {
+      displayInfo(recipes[key]);
     }
   });
 }
 
-function displayInfo(recipe) {
-  const { label, url, image, calories } = recipe;
+function displayInfo(recipes) {
+  const { label, url, image, calories } = recipes;
 
-  const infoRecipes = document.getElementById('info-recipes');
+  let recipeCard = document.createElement('div');
+  let recipeCardTittle = document.createElement('div');
+  let recipeCardImg = document.createElement('div');
 
-  let recipesCards = document.createElement('div');
-  recipesCards.className = 'recipe';
+  recipeCard.className = 'recipe';
+  recipeCardTittle.className = 'recipe-tittle';
+  recipeCardImg.className = 'recipe-img';
 
-  let recipeTittle = document.createElement('div');
-  recipeTittle.className = 'recipe-tittle';
-  recipeTittle.innerHTML = `<h2>${label}</h2>
-                            <p>Calories: ${Math.round(calories)}</p>
-                            <a href="${url} target="_blank">Recipe Url</a>`;
+  recipeCardTittle.innerHTML = `<h2>${label}</h2>
+                                 <p>Calories: ${Math.round(calories)}</p>
+                                 <a href="${url} target="_blank">Recipe Url</a>`;
+  recipeCardImg.innerHTML = `<img src="${image}" alt="${label}">`;
 
-  let recipeImg = document.createElement('div');
-  recipeImg.className = 'recipe-img';
-  recipeImg.innerHTML = `<img src="${image}" alt="${label}"></img>`;
+  recipeCard.appendChild(recipeCardTittle);
+  recipeCard.appendChild(recipeCardImg);
+  infoRecipes.appendChild(recipeCard);
 
-  recipesCards.appendChild(recipeTittle);
-  recipesCards.appendChild(recipeImg);
-
-  infoRecipes.appendChild(recipesCards);
-
-  document.getElementById('food-recipe').value = '';
+  recipeInput.value = '';
 }
 
-function showDataError() {}
+function displayEmptyInfo() {
+  let noRecipeFound = document.createElement('div');
+  let noRecipeTittle = document.createElement('div');
+  let noRecipeImg = document.createElement('div');
 
-function cleanData() {
-  const infoRecipe = document.getElementById('info-recipes');
-  infoRecipe.innerHTML = '';
+  noRecipeFound.className = 'recipe';
+  noRecipeTittle.className = 'recipe-tittle';
+  noRecipeImg.className = 'recipe-img';
+
+  noRecipeTittle.innerHTML = `<h2>Sorry!</h2>
+                              <p>We didn't find any recipe with that ingredient</p>
+                              <p>Try Again 😢</p>`;
+
+  noRecipeImg.innerHTML = `<img src="./img/notFound.jpg" alt="notFound">`;
+
+  noRecipeFound.appendChild(noRecipeTittle);
+  noRecipeFound.appendChild(noRecipeImg);
+  infoRecipes.appendChild(noRecipeFound);
+
+  recipeInput.value = '';
 }
-// calories, image, label, url
-
-const button = document.getElementById('send_info');
-button.addEventListener('click', init);
