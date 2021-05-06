@@ -55,7 +55,7 @@ function displayInfo(recipes) {
 
   recipeCardTittle.innerHTML = `<h2>${label}</h2>
                                  <p>Calories: ${Math.round(calories)}</p>
-                                 <a href="${url} target="_blank">Recipe Url</a>`;
+                                 <p>Watch the complete recipe here 👉 <a href="${url} target="_blank">Recipe Url</a></p>`;
   recipeCardImg.innerHTML = `<img src="${image}" alt="${label}">`;
 
   recipeCard.appendChild(recipeCardTittle);
